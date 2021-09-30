@@ -31,17 +31,8 @@ jobs:
       - name: Patch init script
         run: patch saltinit.py saltinit.py.patch
 
-      - name: Gather Salt version
-        uses: oprypin/find-latest-tag@v1
-        with:
-          repository: saltstack/salt
-          regex: '^v\d{4}\.\d+$'
-        id: salt_version_orig
-
-      - name: Clean up version
-        run: |
-          export version='${{ steps.salt_version_orig.outputs.tag }}'
-          echo "::set-output name=tag::${version#?}"
+      - name: Get container base version
+        run: echo "::set-output name=tag::$(grep -oP '\d{4}\.?(\d+)?$' Dockerfile)"
         id: salt_version
 
       - name: Build and push
