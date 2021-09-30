@@ -17,12 +17,16 @@ jobs:
         with:
           repository: saltstack/salt
           regex: '^v\d{4}\.\d+$'
+        id: salt_version_orig
+
+      - name: Clean up version
+        run: |
+          export version='${{ steps.salt_version_orig.outputs.tag }}'
+          echo "::set-output name=tag::${version#?}"
         id: salt_version
 
       - name: Update version string
-        run: |
-          export version="${{ steps.salt_version.outputs.tag }}"
-          sed -i "1c\FROM docker.io/saltstack/salt:${version#?}" Dockerfile
+        run: sed -i "1c\FROM docker.io/saltstack/salt:${{ steps.salt_version.outputs.tag }}" Dockerfile
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
