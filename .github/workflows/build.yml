@@ -1,0 +1,49 @@
+name: build
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'Dockerfile'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download init script
+        run: |
+          curl -sSLO https://gitlab.com/saltstack/open/saltdocker/-/raw/master/cicd/docker/saltinit.py
+
+      - name: Patch init script
+        run: |
+          patch saltinit.py saltinit.py.patch
+
+      - name: Gather original container image name
+        uses: jacobtomlinson/gha-get-docker-hub-tags@0.1.3
+        with:
+          org: saltstack
+          repo: salt
+        id: salt_version
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.salt_version.outputs.tag }} 
