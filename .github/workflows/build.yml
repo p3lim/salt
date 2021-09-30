@@ -26,7 +26,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download init script
-        run: curl -sSLO https://gitlab.com/saltstack/open/saltdocker/-/raw/master/cicd/docker/saltinit.py
+        run: |
+          curl -sSLO https://gitlab.com/saltstack/open/saltdocker/-/raw/master/cicd/docker/saltinit.py
+          chmod +x saltinit.py
 
       - name: Patch init script
         run: patch saltinit.py saltinit.py.patch
