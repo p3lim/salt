@@ -5,3 +5,4 @@ RUN apk add --no-cache py3-pygit2
 
 # https://gitlab.com/saltstack/open/saltdocker/-/merge_requests/29
 ADD saltinit.py /usr/local/bin/saltinit
+
