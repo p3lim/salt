@@ -1,4 +1,4 @@
-FROM docker.io/saltstack/salt:3002
+FROM docker.io/saltstack/salt:3002.3
 
 # https://gitlab.com/saltstack/open/saltdocker/-/merge_requests/15
 RUN apk add --no-cache py3-pygit2
