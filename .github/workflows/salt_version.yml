@@ -16,7 +16,7 @@ jobs:
         uses: oprypin/find-latest-tag@v1
         with:
           repository: saltstack/salt
-          regex: '^v\d{4}\.\d+$'
+          regex: '^v\d{4}(\.\d+)?$'
         id: salt_version_orig
 
       - name: Clean up version
