@@ -1,0 +1,17 @@
+diff --git a/saltinit.py b/saltinit.py
+index 8f6409b..71d6b37 100644
+--- a/saltinit.py
++++ b/saltinit.py
+@@ -24,6 +24,12 @@ async def main():
+         else:
+             futures.append(await asyncio.create_subprocess_exec("salt-proxy"))
+     else:
++        if "SALT_GPG_INIT" in os.environ:
++            import gnupg
++            gpg = gnupg.GPG(gnupghome="/etc/salt/gpgkeys")
++            if len(gpg.list_keys()) == 0:
++                print("Generating GPG key")
++                gpg.gen_key('%no-protection\n' + gpg.gen_key_input(key_length=2048))
+         if not os.path.exists("/etc/salt/master.d/api.conf"):
+             with open("/etc/salt/master.d/api.conf", "w") as apifile:
+                 if "SALT_API_CONFIG" in os.environ:

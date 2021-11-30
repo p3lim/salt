@@ -31,7 +31,9 @@ jobs:
           chmod +x saltinit.py
 
       - name: Patch init script
-        run: patch saltinit.py saltinit.py.patch
+        run: |
+          patch saltinit.py saltinit.py-user.patch
+          patch saltinit.py saltinit.py-gpg.patch
 
       - name: Get container base version
         run: echo "::set-output name=tag::$(grep -oP '\d{4}\.?(\d+)?$' Dockerfile)"
