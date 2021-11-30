@@ -6,3 +6,5 @@ This repository repackages the [saltstack/salt](https://hub.docker.com/r/saltsta
 
 It also implements GnuPG ([#35](https://gitlab.com/saltstack/open/saltdocker/-/issues/35)).
 GPG can be initialized by setting the `SALT_GPG_INIT` environment variable to a non-empty value.
+
+A handy script for encrypting data with the GPG pubkey is provided (`podman exec salt salt-gpg somesecret`).
