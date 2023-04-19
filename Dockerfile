@@ -1,4 +1,4 @@
-FROM docker.io/saltstack/salt:3005.1
+FROM docker.io/saltstack/salt:3006.0
 
 # https://gitlab.com/saltstack/open/saltdocker/-/issues/35
 RUN apk add --no-cache gnupg
